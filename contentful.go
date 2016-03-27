@@ -23,6 +23,7 @@ type Entries struct {
 func main() {
 	space_id := os.Getenv("SPACE_ID")
 	access_token := os.Getenv("ACCESS_TOKEN")
+	project_path := os.Getenv("PROJECT_PATH")
 	url := fmt.Sprintf("https://cdn.contentful.com/spaces/%s/entries?access_token=%s", space_id, access_token)
 	res, err := http.Get(url)
 	if err != nil {
@@ -40,17 +41,16 @@ func main() {
 		fmt.Println("error:", err)
 	}
 
-	cwd, _ := os.Getwd()
-	file, err := os.Create(filepath.Join(cwd,"./static-site-generator/output.html"))
+	file, err := os.Create(filepath.Join(project_path,"./output.html"))
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	var templatePath = filepath.Join(cwd, "./static-site-generator/post-template.html")
+	templatePath := filepath.Join(project_path, "./post-template.html")
 	t, err := template.ParseFiles( templatePath )
 
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	t.Execute(file, post.Items[0].Fields)
+	t.Execute(file, post.Items)
 	fmt.Println(post)
 }

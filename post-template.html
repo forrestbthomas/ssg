@@ -4,7 +4,9 @@
 	<title>Forrest's Blog</title>
 </head>
 <body>
-	<h1>{{.Title}}</h1>
-	<p>{{.Body}}</p>
+{{range $index, $element := .}}
+	<h1>{{.Fields.Title}}</h1>
+	<p>{{.Fields.Body}}</p>
+{{end}}
 </body>
 </html>
