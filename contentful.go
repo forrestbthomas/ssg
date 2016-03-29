@@ -36,28 +36,19 @@ func main() {
 	project_path := os.Getenv("PROJECT_PATH")
 	url := fmt.Sprintf("https://cdn.contentful.com/spaces/%s/entries?access_token=%s", space_id, access_token)
 	res, err := http.Get(url)
-	if err != nil {
-		// handle error
-	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		// handle error
-	}
 	var post Entries
 	err = json.Unmarshal(body, &post)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	file, err := os.Create(filepath.Join(project_path,"./output.html"))
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	templatePath := filepath.Join(project_path, "./templates/post-template.html")
+	file, err := os.Create(filepath.Join(project_path,"./dist/output.html"))
+	templatePath := filepath.Join(project_path, "./templates/template.html")
 	funcMap := template.FuncMap {
-		"Title" : Title,
-        "MD": ToByteThenMD,
+		"Title" : 	Title,
+		"MD":		ToByteThenMD,
     }
-	t := template.Must(template.New("post-template.html").Funcs( funcMap ).ParseFiles( templatePath ))
+	t := template.Must(template.New("template.html").Funcs( funcMap ).ParseFiles( templatePath ))
 	t.Execute(file, post.Items)
 }

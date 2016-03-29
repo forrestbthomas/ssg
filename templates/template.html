@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Forrest's Blog</title>
+	<link rel="stylesheet" type="text/css" href="./app.min.css">
+</head>
+<body>
+{{range .}}
+	<div class="row">
+		{{with .Fields}}
+			<div class="col-xs-12">{{Title .Title}}</div>
+			<div class="col-xs-12 well">{{MD .Body}}</div>
+		{{end}}
+	</div>
+{{end}}
+</body>
+</html>
