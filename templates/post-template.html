@@ -6,8 +6,8 @@
 <body>
 {{range $index, $element := .}}
 	{{with .Fields}}
-		<h1>{{.Title}}</h1>
-		<p>{{.Body}}</p>
+		{{Title .Title}}
+		{{MD .Body}}
 	{{end}}
 {{end}}
 </body>

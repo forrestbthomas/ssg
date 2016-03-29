@@ -8,17 +8,27 @@ import (
 	"html/template"
 	"os"
 	"path/filepath"
+	"github.com/russross/blackfriday"
 )
 
 type Entries struct {
 	Items []struct {
 		Fields struct {
 			Title string `json: "title"`
-			Body template.HTML	`json: "body"`
+			Body string	`json: "body"`
 		} `json: "fields"`
 	} `json: "items"`
 }
 
+func Title(s string) template.HTML {
+	interpolatedString := fmt.Sprintf("<h1>%s</h1>", s)
+	return template.HTML(interpolatedString)
+}
+
+func ToByteThenMD(s string) template.HTML {
+	byteString := []byte(s)
+	return template.HTML(blackfriday.MarkdownBasic(byteString)[:])
+}
 
 func main() {
 	space_id := os.Getenv("SPACE_ID")
@@ -34,24 +44,20 @@ func main() {
 	if err != nil {
 		// handle error
 	}
-	// fmt.Printf("%s", body)
 	var post Entries
 	err = json.Unmarshal(body, &post)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-
 	file, err := os.Create(filepath.Join(project_path,"./output.html"))
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	templatePath := filepath.Join(project_path, "./post-template.html")
-	t, err := template.ParseFiles( templatePath )
-
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-
-	
+	templatePath := filepath.Join(project_path, "./templates/post-template.html")
+	funcMap := template.FuncMap {
+		"Title" : Title,
+        "MD": ToByteThenMD,
+    }
+	t := template.Must(template.New("post-template.html").Funcs( funcMap ).ParseFiles( templatePath ))
 	t.Execute(file, post.Items)
 }
