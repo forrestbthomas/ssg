@@ -14,7 +14,7 @@ type Entries struct {
 	Items []struct {
 		Fields struct {
 			Title string `json: "title"`
-			Body string	`json: "body"`
+			Body template.HTML	`json: "body"`
 		} `json: "fields"`
 	} `json: "items"`
 }
@@ -51,6 +51,7 @@ func main() {
 	if err != nil {
 		fmt.Println("error:", err)
 	}
+
+	
 	t.Execute(file, post.Items)
-	fmt.Println(post)
 }

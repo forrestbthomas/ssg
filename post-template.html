@@ -5,8 +5,10 @@
 </head>
 <body>
 {{range $index, $element := .}}
-	<h1>{{.Fields.Title}}</h1>
-	<p>{{.Fields.Body}}</p>
+	{{with .Fields}}
+		<h1>{{.Title}}</h1>
+		<p>{{.Body}}</p>
+	{{end}}
 {{end}}
 </body>
 </html>
