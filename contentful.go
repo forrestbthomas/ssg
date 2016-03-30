@@ -1,23 +1,31 @@
 package main
 
 import (
+	"os"
 	"fmt"
-	"io/ioutil"
+	"time"
 	"net/http"
+	"io/ioutil"
 	"encoding/json"
 	"html/template"
-	"os"
 	"path/filepath"
 	"github.com/russross/blackfriday"
 )
 
 type Entries struct {
 	Items []struct {
+		Sys struct {
+			CreatedAt time.Time `json: "createdAt"`
+		} `json: "sys"`
 		Fields struct {
 			Title string `json: "title"`
 			Body string	`json: "body"`
 		} `json: "fields"`
 	} `json: "items"`
+}
+
+func NiceTime(t time.Time) string {
+	return t.Format("Mon Jan 2 15:04:05 MST 2006")
 }
 
 func Title(s string) template.HTML {
@@ -48,6 +56,7 @@ func main() {
 	funcMap := template.FuncMap {
 		"Title" : 	Title,
 		"MD":		ToByteThenMD,
+		"NiceTime":	NiceTime,
     }
 	t := template.Must(template.New("template.html").Funcs( funcMap ).ParseFiles( templatePath ))
 	t.Execute(file, post.Items)

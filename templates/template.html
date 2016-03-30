@@ -7,10 +7,9 @@
 <body>
 {{range .}}
 	<div class="row">
-		{{with .Fields}}
-			<div class="col-xs-12">{{Title .Title}}</div>
-			<div class="col-xs-12 well">{{MD .Body}}</div>
-		{{end}}
+		<div class="col-xs-12">{{Title .Fields.Title}}</div>
+		<div class="col-xs-12">{{NiceTime .Sys.CreatedAt}}</div>
+		<div class="col-xs-12 well">{{MD .Fields.Body}}</div>
 	</div>
 {{end}}
 <script type="text/javascript" src="./app.min.js"></script>
