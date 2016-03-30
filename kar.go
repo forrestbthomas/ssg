@@ -9,6 +9,7 @@ import (
   "github.com/go-gonzo/fs"
   "github.com/go-gonzo/util"
   "github.com/go-gonzo/css"
+  "github.com/go-gonzo/js"
 )
 
 
@@ -21,12 +22,23 @@ func init() {
 
     return build.Add(
       kargar.Task{
-        Name:  "minify-css",
-        Usage: "Concat frontend CSS to app.min.css",
+        Name:  "css",
+        Usage: "Concat and minify CSS to app.min.css",
         Action: func(ctx context.Context) error {
           return fs.Src(ctx, "./assets/stylesheets/*.css").Then(
             util.Concat(ctx, "app.css"),
             css.Minify(),
+            fs.Dest("./dist/"),
+          )
+        },
+      },
+      kargar.Task{
+        Name: "js",
+        Usage: "Concat and minify JS to app.min.js",
+        Action: func(ctx context.Context) error {
+          return fs.Src(ctx, "./assets/javascripts/*.js").Then(
+            util.Concat(ctx, "app.js"),
+            js.Minify(),
             fs.Dest("./dist/"),
           )
         },
