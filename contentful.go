@@ -25,7 +25,7 @@ type Entries struct {
 }
 
 func NiceTime(t time.Time) string {
-	return t.Format("Mon Jan 2 15:04:05 MST 2006")
+	return t.Local().Format("Mon Jan 2 15:04")
 }
 
 func Title(s string) template.HTML {
