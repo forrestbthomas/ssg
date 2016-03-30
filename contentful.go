@@ -4,6 +4,7 @@ import (
 	"os"
 	"fmt"
 	"time"
+	"sort"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
@@ -12,16 +13,30 @@ import (
 	"github.com/russross/blackfriday"
 )
 
+type Item struct {
+	Sys struct {
+		CreatedAt time.Time `json: "createdAt"`
+	} `json: "sys"`
+	Fields struct {
+		Title string `json: "title"`
+		Body string	`json: "body"`
+	} `json: "fields"`
+}
+
 type Entries struct {
-	Items []struct {
-		Sys struct {
-			CreatedAt time.Time `json: "createdAt"`
-		} `json: "sys"`
-		Fields struct {
-			Title string `json: "title"`
-			Body string	`json: "body"`
-		} `json: "fields"`
-	} `json: "items"`
+	Items []Item `json: "items"`
+}
+
+type ByTime []Item
+
+func (s ByTime) Len() int {
+    return len(s)
+}
+func (s ByTime) Swap(i, j int) {
+    s[i], s[j] = s[j], s[i]
+}
+func (s ByTime) Less(i, j int) bool {
+    return s[i].Sys.CreatedAt.After(s[j].Sys.CreatedAt)
 }
 
 func NiceTime(t time.Time) string {
@@ -59,5 +74,6 @@ func main() {
 		"NiceTime":	NiceTime,
     }
 	t := template.Must(template.New("template.html").Funcs( funcMap ).ParseFiles( templatePath ))
+	sort.Sort(ByTime(post.Items))
 	t.Execute(file, post.Items)
 }
