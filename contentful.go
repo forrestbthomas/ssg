@@ -17,6 +17,7 @@ import (
 type Item struct {
 	Sys struct {
 		CreatedAt time.Time `json: "createdAt"`
+		UpdatedAt time.Time `json: "updatedAt"`
 	} `json: "sys"`
 	Fields struct {
 		Title string `json: "title"`

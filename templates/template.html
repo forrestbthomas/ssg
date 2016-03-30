@@ -24,14 +24,15 @@
       <div class="col-md-3" id="leftCol">
         <ul class="nav nav-stacked" id="sidebar">
         {{range .}}
-        	<li><a href="#sec-{{.Fields.Title}}">{{Title .Fields.Title}}</a></li>
+        	<li><a href="#sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</a></li>
 		{{end}}
         </ul>
       </div>
       <div class="col-md-9">
 		{{range .}}
-        	<h2 id="sec-{{.Fields.Title}}">{{Title .Fields.Title}}</h2>
-        	<h5>{{NiceTime .Sys.CreatedAt}}</h5>
+        	<h2 id="sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</h2>
+        	<h6>Created On: {{NiceTime .Sys.CreatedAt}}</h6>
+        	<h6 class="updated-at">Last Updated On: {{NiceTime .Sys.UpdatedAt}}</h6>
         	<div class="well">{{MD .Fields.Body}}</div>
 		{{end}}
   	</div>
