@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 	"sort"
+	"strings"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
@@ -43,9 +44,8 @@ func NiceTime(t time.Time) string {
 	return t.Local().Format("Mon Jan 2 15:04")
 }
 
-func Title(s string) template.HTML {
-	interpolatedString := fmt.Sprintf("<h1>%s</h1>", s)
-	return template.HTML(interpolatedString)
+func Title(s string) string {
+	return strings.Title(s)
 }
 
 func ToByteThenMD(s string) template.HTML {
