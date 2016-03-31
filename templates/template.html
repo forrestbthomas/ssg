@@ -2,16 +2,19 @@
 <html>
 <head>
 	<title>Forrest's Blog</title>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway">
 	<link rel="stylesheet" type="text/css" href="./app.min.css">
 	<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
 </head>
 <body>
 
+<div class="sidebar-bg"></div>
+
 <div id="masthead">  
   <div class="container">
       <div class="row">
         <div class="col-md-7">
-          <h1>CODERFORREST
+          <h1 id="title">C O D E R F O R R E S T
             <p class="lead">Clever and/or Witty Subtitle to Demonstrate Wit and Cleverness</p>
           </h1>
         </div>
@@ -21,19 +24,19 @@
 
 <div class="container">
 	<div class="row">
-      <div class="col-md-3" id="leftCol">
+      <div class="col-md-2" id="leftCol">
         <ul class="nav nav-stacked" id="sidebar">
         {{range .}}
         	<li><a href="#sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</a></li>
 		{{end}}
         </ul>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-10">
 		{{range .}}
-        	<h2 id="sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</h2>
+        	<h2 class="post-title" id="sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</h2>
         	<h6>Created On: {{NiceTime .Sys.CreatedAt}}</h6>
         	<h6 class="updated-at">Last Updated On: {{NiceTime .Sys.UpdatedAt}}</h6>
-        	<div class="well">{{MD .Fields.Body}}</div>
+        	<div class="post-bg">{{MD .Fields.Body}}</div>
 		{{end}}
   	</div>
 </div>
