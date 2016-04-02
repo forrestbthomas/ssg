@@ -8,15 +8,11 @@
 </head>
 <body>
 
-<div class="sidebar-bg"></div>
-
 <div id="masthead">  
   <div class="container">
       <div class="row">
-        <div class="col-md-7">
-          <h1 id="title">C O D E R F O R R E S T
-            <p class="lead">Clever and/or Witty Subtitle to Demonstrate Wit and Cleverness</p>
-          </h1>
+        <div class="text-left col-xs-3">
+          <h1 id="title">CODERFORREST</h1>
         </div>
       </div> 
   </div>
@@ -24,14 +20,14 @@
 
 <div class="container">
 	<div class="row">
-      <div class="col-md-2" id="leftCol">
+      <div class="col-xs-2" id="leftCol">
         <ul class="nav nav-stacked" id="sidebar">
         {{range .}}
         	<li><a href="#sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</a></li>
 		{{end}}
         </ul>
       </div>
-      <div class="col-md-10">
+      <div class="col-xs-10">
 		{{range .}}
         	<h2 class="post-title" id="sec-{{.Fields.Title | urlquery}}">{{Title .Fields.Title}}</h2>
         	<h6>Created On: {{NiceTime .Sys.CreatedAt}}</h6>
