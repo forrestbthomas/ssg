@@ -1,6 +1,5 @@
 body {
-    font-family: Raleway, sans-serif;
-    background-color: #F6F6F6;
+    font-family: Raleway;
 }
 
 h1 {
@@ -8,12 +7,13 @@ h1 {
 }
 
 .post-bg {
-    background-color: #2B2B2B;
-    border: 2px solid #F6F6F6;
+    background-color: #F6F6F6;
+    border: 2px solid #2B2B2B;
     border-radius: 10px;
     padding: 10px 0 0 10px;
-    color: #F6F6F6;
+    color: #2B2B2B;
     font-size: 1.25em;
+    font-weight: bold;
 }
 
 .post-title {
@@ -40,16 +40,11 @@ h1 {
     word-spacing: 3px;
 }
 
-@media (max-width: 767px) {
-    .sidebar-nav-fixed {
-        position:static;
-        width:auto;
-    }
+#reader-note {
+    cursor: pointer;
+    font-weight: bold;
 }
 
-@media (max-width: 979px) {
-    .sidebar-nav-fixed {
-        top:70px;
-    }
+#reader-note p {
+    cursor: auto;
 }
-
