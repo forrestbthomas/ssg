@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"time"
 	"sort"
+	"bufio"
 	"strings"
+	"os/exec"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
@@ -54,6 +56,24 @@ func ToByteThenMD(s string) template.HTML {
 	return template.HTML(blackfriday.MarkdownBasic(byteString)[:])
 }
 
+func SpawnProcesses(c string) {
+	fmt.Printf("\nspawning %s task\n", c)
+	karCmd := exec.Command("kar", "run", c)
+	karOut, _ := karCmd.StderrPipe()
+
+	scanner := bufio.NewScanner(karOut)
+	go func() {
+		for scanner.Scan() {
+			fmt.Printf("%s\n", scanner.Text())
+		}
+		fmt.Printf("\n\n")
+	}()
+
+	karCmd.Start()
+
+	karCmd.Wait()
+}
+
 func main() {
 	space_id := os.Getenv("SPACE_ID")
 	access_token := os.Getenv("ACCESS_TOKEN")
@@ -67,14 +87,17 @@ func main() {
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	file, err := os.Create(filepath.Join(project_path,"./dist/output.html"))
-	templatePath := filepath.Join(project_path, "./templates/template.html")
 	funcMap := template.FuncMap {
 		"Title" : 	Title,
 		"MD":		ToByteThenMD,
 		"NiceTime":	NiceTime,
     }
+	file, err := os.Create(filepath.Join(project_path,"./dist/output.html"))
+	templatePath := filepath.Join(project_path, "./templates/template.html")
 	t := template.Must(template.New("template.html").Funcs( funcMap ).ParseFiles( templatePath ))
 	sort.Sort(ByTime(post.Items))
+	SpawnProcesses("css")
+	SpawnProcesses("js")
+	fmt.Printf("\n\nExecuting template...")
 	t.Execute(file, post.Items)
 }
